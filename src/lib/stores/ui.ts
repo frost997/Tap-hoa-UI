@@ -92,7 +92,7 @@ function createUIStore() {
                 setTimeout(() => {
                     update(state => ({
                         ...state,
-                        toasts: state.toasts.filter(t => t.id !== toast.id),
+                        toasts: state.toasts.filter((t: any) => t.id !== toast.id),
                     }));
                 }, duration);
             }

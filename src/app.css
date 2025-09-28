@@ -2,30 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-    html {
-        font-family: system-ui, sans-serif;
-    }
-}
-
 @layer components {
     .btn {
         @apply px-4 py-2 rounded-md font-medium transition-colors duration-200;
     }
 
     .btn-primary {
-        @apply bg-primary-600 hover:bg-primary-700 text-white;
-    }
-
-    .btn-secondary {
-        @apply bg-gray-200 hover:bg-gray-300 text-gray-900;
+        @apply bg-blue-600 hover:bg-blue-700 text-white;
     }
 
     .input {
-        @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+        @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
     }
 
     .card {
         @apply bg-white rounded-lg shadow-md p-6;
     }
+}
+
+/* Add primary color classes */
+.text-primary-600 {
+    @apply text-blue-600;
+}
+
+.bg-primary-600 {
+    @apply bg-blue-600;
+}
+
+.hover\:text-primary-600:hover {
+    @apply text-blue-600;
 }

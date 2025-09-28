@@ -1,24 +1,30 @@
-// =================================
-// STEP 4: AUTH STORE
-// =================================
-
 // src/lib/stores/auth.js
 import {writable} from 'svelte/store';
 import {browser} from '$app/environment';
 import {api} from '$lib/utils/api.js';
+import axios from "axios";
+
+type auth = {
+    user: string | null,
+    token: string | null,
+    isLoading: boolean | false,
+    isAuthenticated: boolean | false,
+}
+
 
 function createAuthStore() {
-    const {subscribe, set, update} = writable({
+    let authPayload: auth = {
         user: null,
         token: null,
         isLoading: false,
         isAuthenticated: false,
-    });
+    }
+    const {subscribe, set, update} = writable(authPayload);
 
     // Initialize auth state from localStorage
     if (browser) {
-        const token = localStorage.getItem('auth_token');
-        const user = localStorage.getItem('user');
+        const token: string | null = localStorage.getItem('auth_token');
+        const user: string | null = localStorage.getItem('user');
 
         if (token && user) {
             set({
@@ -34,7 +40,7 @@ function createAuthStore() {
         subscribe,
 
         // Login method
-        login: async (credentials) => {
+        login: async (credentials: any) => {
             update(state => ({...state, isLoading: true}));
 
             try {
@@ -57,15 +63,19 @@ function createAuthStore() {
                 return {success: true};
             } catch (error) {
                 update(state => ({...state, isLoading: false}));
+                let message = 'Login failed'
+                if (error instanceof Error) message = error.message
+                if (axios.isAxiosError(error)) message = error.response?.data.message ?? ''
+
                 return {
                     success: false,
-                    error: error.response?.data?.message || 'Login failed'
+                    error: message
                 };
             }
         },
 
         // Register method
-        register: async (userData) => {
+        register: async (userData: any) => {
             update(state => ({...state, isLoading: true}));
 
             try {
@@ -87,10 +97,13 @@ function createAuthStore() {
                 return {success: true};
             } catch (error) {
                 update(state => ({...state, isLoading: false}));
+                let message = 'Registration failed'
+                if (error instanceof Error) message = error.message
+                if (axios.isAxiosError(error)) message = error.response?.data.message ?? ''
                 return {
                     success: false,
-                    error: error.response?.data?.message || 'Registration failed'
-                };
+                    error: message
+                }
             }
         },
 
@@ -117,7 +130,7 @@ function createAuthStore() {
         },
 
         // Update user profile
-        updateProfile: async (userData) => {
+        updateProfile: async (userData: any) => {
             update(state => ({...state, isLoading: true}));
 
             try {
@@ -137,9 +150,13 @@ function createAuthStore() {
                 return {success: true};
             } catch (error) {
                 update(state => ({...state, isLoading: false}));
+
+                let message = 'Profile update failed'
+                if (error instanceof Error) message = error.message
+                if (axios.isAxiosError(error)) message = error.response?.data.message ?? ''
                 return {
                     success: false,
-                    error: error.response?.data?.message || 'Profile update failed'
+                    error: message
                 };
             }
         },

@@ -1,12 +1,14 @@
 import {writable} from 'svelte/store';
 import {browser} from '$app/environment';
 import type {Product} from "$lib/types/product";
-import type {Cart} from "$lib/types/cart";
+import type {Cart, CartItem} from "$lib/types/cart";
 
 function createCartStore() {
-    const {subscribe, set, update} = writable({
+    const cart: Cart = {
+        id: '',
         items: [],
-    });
+    }
+    const {subscribe, set, update} = writable(cart);
 
     // Initialize cart from localStorage
     if (browser) {
@@ -19,23 +21,20 @@ function createCartStore() {
 
 
     // Helper function to save to localStorage
-    const saveToStorage = (cart) => {
+    const saveToStorage = (cart: Cart) => {
         if (browser) {
             localStorage.setItem('cart', JSON.stringify(cart));
         }
     };
 
     return {
-        subscribe,
-
-        // Add item to cart
         addItem: (product: Product, quantity = 1, variant = null) => {
             update((cart: Cart) => {
                 const existingItemIndex = cart.items.findIndex(item =>
                     item.productID === product.id
                 );
 
-                let newItems;
+                let newItems: CartItem[];
                 if (existingItemIndex > -1) {
                     // Update existing item
                     newItems = [...cart.items];
@@ -43,49 +42,55 @@ function createCartStore() {
                 } else {
                     // Add new item
                     const newItem = {
-                        id: `${product.id}`,
-                        product,
-                        quantity,
-                        variant,
-                        price: product.price,
-                    };
+                        productID: product.id,
+                        userID: "",
+                        productName: product.productName,
+                        quantity: quantity,
+                        price: product.price
+                    }
                     newItems = [...cart.items, newItem];
                 }
 
                 const newCart = {
+                    id: '',
                     items: newItems,
                 };
 
                 saveToStorage(newCart);
                 return newCart;
             });
+        },
+
+        // Add item to cart
+        clearCart: () => {
+            const emptyCart = {
+                id: '',
+                items: [],
+            };
+
+            set(emptyCart);
+            saveToStorage(emptyCart);
         },
 
         // Update item quantity
-        updateQuantity: (itemId, quantity) => {
-            if (quantity <= 0) {
-                return cartStore.removeItem(itemId);
-            }
-
-            update(cart => {
-                const newItems = cart.items.map(item =>
-                    item.id === itemId ? {...item, quantity} : item
+        getItemQuantity: (productID: string, variant = null) => {
+            let quantity = 0;
+            update((cart: Cart) => {
+                const item = cart.items.find(item =>
+                    item.productID === productID
                 );
-
-                const newCart = {
-                    items: newItems,
-                };
-
-                saveToStorage(newCart);
-                return newCart;
+                quantity = item?.quantity || 0;
+                return cart;
             });
+            return quantity;
         },
 
         // Remove item from cart
-        removeItem: (itemId) => {
-            update(cart => {
-                const newItems = cart.items.filter(item => item.id !== itemId);
+        removeItem: (productID: string) => {
+            update((cart: Cart) => {
+                const newItems = cart.items.filter(item => item.productID !== productID);
                 const newCart = {
+                    id: '',
                     items: newItems,
                 };
 
@@ -95,29 +100,27 @@ function createCartStore() {
         },
 
         // Clear entire cart
-        clearCart: () => {
-            const emptyCart = {
-                items: [],
-                totalItems: 0,
-                totalPrice: 0,
-            };
-
-            set(emptyCart);
-            saveToStorage(emptyCart);
-        },
+        subscribe,
 
         // Get item count for specific product
-        getItemQuantity: (productId, variant = null) => {
-            let quantity = 0;
-            update(cart => {
-                const item = cart.items.find(item =>
-                    item.product.id === productId &&
-                    JSON.stringify(item.variant) === JSON.stringify(variant)
+        updateQuantity: (productID: string, quantity: number) => {
+            if (quantity <= 0) {
+                return cartStore.removeItem(productID);
+            }
+
+            update((cart: Cart) => {
+                const newItems = cart.items.map(item =>
+                    item.productID === productID ? {...item, quantity} : item
                 );
-                quantity = item?.quantity || 0;
-                return cart;
+
+                const newCart = {
+                    id: '',
+                    items: newItems,
+                };
+
+                saveToStorage(newCart);
+                return newCart;
             });
-            return quantity;
         },
     };
 }

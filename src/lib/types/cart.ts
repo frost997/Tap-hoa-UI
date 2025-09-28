@@ -3,7 +3,7 @@
 export type ProductUser = {
     productID: string;
     userID: string;
-    productName: number;
+    productName: string;
     quantity: number;
 }
 
