@@ -9,6 +9,7 @@ type auth = {
     token: string | null,
     isLoading: boolean | false,
     isAuthenticated: boolean | false,
+    role: string[]
 }
 
 
@@ -18,6 +19,7 @@ function createAuthStore() {
         token: null,
         isLoading: false,
         isAuthenticated: false,
+        role: []
     }
     const {subscribe, set, update} = writable(authPayload);
 
@@ -32,6 +34,7 @@ function createAuthStore() {
                 token,
                 isLoading: false,
                 isAuthenticated: true,
+                role: []
             });
         }
     }
@@ -45,7 +48,7 @@ function createAuthStore() {
 
             try {
                 const response = await api.auth.login(credentials);
-                const {user, token} = response.data;
+                const {user, token, roles} = response.data;
 
                 // Store in localStorage
                 if (browser) {
@@ -58,9 +61,13 @@ function createAuthStore() {
                     token,
                     isLoading: false,
                     isAuthenticated: true,
+                    role: roles
                 });
 
-                return {success: true};
+                return {
+                    success: true,
+                    error: ''
+                };
             } catch (error) {
                 update(state => ({...state, isLoading: false}));
                 let message = 'Login failed'
@@ -80,7 +87,7 @@ function createAuthStore() {
 
             try {
                 const response = await api.auth.register(userData);
-                const {user, token} = response.data;
+                const {user, token, roles} = response.data;
 
                 if (browser) {
                     localStorage.setItem('auth_token', token);
@@ -92,6 +99,7 @@ function createAuthStore() {
                     token,
                     isLoading: false,
                     isAuthenticated: true,
+                    role: roles
                 });
 
                 return {success: true};
@@ -126,6 +134,7 @@ function createAuthStore() {
                 token: null,
                 isLoading: false,
                 isAuthenticated: false,
+                role: []
             });
         },
 

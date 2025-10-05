@@ -7,7 +7,7 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <!-- Company Info -->
             <div class="col-span-1 md:col-span-2">
-                <h3 class="text-2xl font-bold mb-4">YourStore</h3>
+                <h3 class="text-2xl font-bold mb-4">Convenient Store</h3>
                 <p class="text-gray-300 mb-4">
                     Your trusted online marketplace for quality products at great prices.
                 </p>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 YourStore. All rights reserved.</p>
+            <p>&copy; 2024 ConvenientStore. All rights reserved.</p>
         </div>
     </div>
 </footer>

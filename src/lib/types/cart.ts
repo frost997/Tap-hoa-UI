@@ -5,13 +5,15 @@ export type ProductUser = {
     userID: string;
     productName: string;
     quantity: number;
+    price: number;
 }
 
 export interface CartItem extends ProductUser {
-    price: number;
 }
 
 export interface Cart {
     id: string;
     items: CartItem[];
+    totalItems: number,
+    totalPrice: number,
 }

@@ -7,6 +7,8 @@ function createCartStore() {
     const cart: Cart = {
         id: '',
         items: [],
+        totalItems: 0,
+        totalPrice: 0,
     }
     const {subscribe, set, update} = writable(cart);
 
@@ -19,7 +21,11 @@ function createCartStore() {
         }
     }
 
-
+    const calculateTotals = (items: CartItem[]) => {
+        const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+        const totalPrice = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        return {totalItems, totalPrice};
+    };
     // Helper function to save to localStorage
     const saveToStorage = (cart: Cart) => {
         if (browser) {
@@ -51,9 +57,11 @@ function createCartStore() {
                     newItems = [...cart.items, newItem];
                 }
 
+                const totals = calculateTotals(newItems);
                 const newCart = {
                     id: '',
                     items: newItems,
+                    ...totals
                 };
 
                 saveToStorage(newCart);
@@ -66,6 +74,8 @@ function createCartStore() {
             const emptyCart = {
                 id: '',
                 items: [],
+                totalItems: 0,
+                totalPrice: 0,
             };
 
             set(emptyCart);
@@ -89,9 +99,11 @@ function createCartStore() {
         removeItem: (productID: string) => {
             update((cart: Cart) => {
                 const newItems = cart.items.filter(item => item.productID !== productID);
+                const totals = calculateTotals(newItems);
                 const newCart = {
                     id: '',
                     items: newItems,
+                    ...totals
                 };
 
                 saveToStorage(newCart);
@@ -113,9 +125,11 @@ function createCartStore() {
                     item.productID === productID ? {...item, quantity} : item
                 );
 
+                const totals = calculateTotals(newItems);
                 const newCart = {
                     id: '',
                     items: newItems,
+                    ...totals
                 };
 
                 saveToStorage(newCart);

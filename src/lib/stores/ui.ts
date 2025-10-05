@@ -5,8 +5,38 @@
 // src/lib/stores/ui.js
 import {writable} from 'svelte/store';
 
+type toast = {
+    id: string,
+    message: string,
+    type: string, // 'success', 'error', 'warning', 'info'
+    duration: string,
+}
+
+type UIStore = {
+    // Loading states
+    isLoading: boolean,
+    loadingMessage: string,
+
+    // Modal states
+    modals: {
+        cartDrawer: boolean,
+        loginModal: boolean,
+        productQuickView: boolean,
+    },
+
+    // Toast notifications
+    toasts: toast[],
+
+    // Mobile menu
+    mobileMenuOpen: boolean,
+
+    // Search
+    searchOpen: boolean,
+    searchQuery: string,
+}
+
 function createUIStore() {
-    const {subscribe, set, update} = writable({
+    const UIstorePayload: UIStore = {
         // Loading states
         isLoading: false,
         loadingMessage: '',
@@ -27,8 +57,8 @@ function createUIStore() {
         // Search
         searchOpen: false,
         searchQuery: '',
-    });
-
+    }
+    const {subscribe, set, update} = writable(UIstorePayload);
     return {
         subscribe,
 
