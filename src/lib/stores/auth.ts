@@ -48,7 +48,7 @@ function createAuthStore() {
 
             try {
                 const response = await api.auth.login(credentials);
-                const {user, token, roles} = response.data;
+                const {user, access_token: token, roles} = response.data;
 
                 // Store in localStorage
                 if (browser) {
@@ -102,7 +102,7 @@ function createAuthStore() {
                     role: roles
                 });
 
-                return {success: true};
+                return {success: true, error: ''};
             } catch (error) {
                 update(state => ({...state, isLoading: false}));
                 let message = 'Registration failed'

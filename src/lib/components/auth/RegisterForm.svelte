@@ -3,28 +3,24 @@
     import {uiStore} from '$lib/stores/ui.js';
     import {goto} from '$app/navigation';
 
-    let formData = {
-        firstName: '',
-        lastName: '',
+    let formData = $state({
+        userName: '',
         email: '',
         password: '',
         confirmPassword: ''
-    };
-    let errors = {
-        firstName: '',
-        lastName: '',
+    });
+    let errors = $state({
+        userName: '',
         email: '',
         password: '',
         confirmPassword: ''
-    };
-    let isLoading = false;
+    });
+    let isLoading = $state(false);
 
     function validateForm() {
-        errors = {};
 
-        if (!formData.firstName) errors.firstName = 'First name is required';
-        if (!formData.lastName) errors.lastName = 'Last name is required';
-
+        let isValidate = true
+        if (!formData.userName) errors.userName = 'User name is required';
         if (!formData.email) {
             errors.email = 'Email is required';
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
@@ -40,8 +36,11 @@
         if (formData.password !== formData.confirmPassword) {
             errors.confirmPassword = 'Passwords do not match';
         }
+        if (errors.password.length || errors.email.length || errors.confirmPassword.length) {
+            isValidate = false
+        }
 
-        return Object.keys(errors).length === 0;
+        return isValidate;
     }
 
     async function handleSubmit() {
@@ -54,7 +53,7 @@
 
         if (result.success) {
             uiStore.addToast('Registration successful!', 'success');
-            goto('/account');
+            await goto('/auth/login');
         } else {
             uiStore.addToast(result.error, 'error');
         }
@@ -62,42 +61,26 @@
 </script>
 
 <div class="w-full max-w-md">
-    <form on:submit|preventDefault={handleSubmit} class="space-y-6">
+    <form onsubmit={handleSubmit} class="space-y-6">
         <!-- Name Fields -->
         <div class="grid grid-cols-2 gap-4">
             <div>
-                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">
-                    First Name
+                <label for="userName" class="block text-sm font-medium text-gray-700 mb-2">
+                    User Name
                 </label>
                 <input
-                        id="firstName"
+                        id="userName"
                         type="text"
-                        bind:value={formData.firstName}
+                        bind:value={formData.userName}
                         class="input-field"
-                        class:border-red-500={errors.firstName}
+                        class:border-red-500={errors.userName}
                         disabled={isLoading}
                 />
-                {#if errors.firstName}
-                    <p class="mt-1 text-sm text-red-600">{errors.firstName}</p>
+                {#if errors.userName}
+                    <p class="mt-1 text-sm text-red-600">{errors.userName}</p>
                 {/if}
             </div>
 
-            <div>
-                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">
-                    Last Name
-                </label>
-                <input
-                        id="lastName"
-                        type="text"
-                        bind:value={formData.lastName}
-                        class="input-field"
-                        class:border-red-500={errors.lastName}
-                        disabled={isLoading}
-                />
-                {#if errors.lastName}
-                    <p class="mt-1 text-sm text-red-600">{errors.lastName}</p>
-                {/if}
-            </div>
         </div>
 
         <!-- Email -->

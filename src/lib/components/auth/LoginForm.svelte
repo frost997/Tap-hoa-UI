@@ -3,38 +3,43 @@
     import {uiStore} from '$lib/stores/ui.js';
     import {goto} from '$app/navigation';
 
-    let user = '';
-    let password = '';
-    let errors = {user: '', password: ''};
-    let isLoading = false;
+    let email = $state('');
+    let password = $state('');
+    let error = $state({email: '', password: ''});
+    let isLoading = $state(false);
 
     function validateForm() {
-
-        if (!user) {
-            errors.user = 'Email is required';
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user)) {
-            errors.user = 'Invalid email format';
+        let isValidate = true
+        if (!email) {
+            error.email = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            error.email = 'Invalid email format';
         }
 
         if (!password) {
-            errors.password = 'Password is required';
+            error.password = 'Password is required';
         } else if (password.length < 6) {
-            errors.password = 'Password must be at least 6 characters';
+            error.password = 'Password must be at least 6 characters';
         }
 
-        return Object.keys(errors).length === 0;
+        if (error.password.length || error.email.length) {
+            isValidate = false
+        }
+
+        return isValidate;
     }
 
     async function handleSubmit() {
-        if (!validateForm()) return;
+        const isValidate = validateForm()
+        if (!isValidate) return;
 
         isLoading = true;
-        const result = await authStore.login({user, password});
+        const result = await authStore.login({email, password});
         isLoading = false;
 
         if (result.success) {
             uiStore.addToast('Login successful!', 'success');
-            await goto('/account');
+            // await goto('/account');
         } else {
             uiStore.addToast(result.error, 'error');
         }
@@ -42,7 +47,7 @@
 </script>
 
 <div class="w-full max-w-md">
-    <form on:submit|preventDefault={handleSubmit} class="space-y-6">
+    <form onsubmit={handleSubmit} class="space-y-6">
         <!-- Email -->
         <div>
             <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
@@ -51,14 +56,14 @@
             <input
                     id="email"
                     type="email"
-                    bind:value={user}
+                    bind:value={email}
                     class="input-field"
-                    class:border-red-500={errors.email}
+                    class:border-red-500={error.email}
                     placeholder="your@email.com"
                     disabled={isLoading}
             />
-            {#if errors.email}
-                <p class="mt-1 text-sm text-red-600">{errors.email}</p>
+            {#if error.email}
+                <p class="mt-1 text-sm text-red-600">{error.email}</p>
             {/if}
         </div>
 
@@ -72,12 +77,12 @@
                     type="password"
                     bind:value={password}
                     class="input-field"
-                    class:border-red-500={errors.password}
+                    class:border-red-500={error.password}
                     placeholder="••••••••"
                     disabled={isLoading}
             />
-            {#if errors.password}
-                <p class="mt-1 text-sm text-red-600">{errors.password}</p>
+            {#if error.password}
+                <p class="mt-1 text-sm text-red-600">{error.password}</p>
             {/if}
         </div>
 
@@ -94,7 +99,7 @@
         <button
                 type="submit"
                 disabled={isLoading}
-                class="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                class="w-full btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
         >
             {isLoading ? 'Logging in...' : 'Login'}
         </button>
