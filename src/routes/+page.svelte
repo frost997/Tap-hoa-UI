@@ -1,4 +1,4 @@
-<!-- src/routes/(app)/+page.svelte - Improved Homepage -->
+<!-- src/routes/(app)/login.svelte - Improved Homepage -->
 <script lang="ts">
     import '../app.css';
 </script>

@@ -99,7 +99,7 @@
         <button
                 type="submit"
                 disabled={isLoading}
-                class="w-full btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                class="w-full btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed hover:text-primary-600 cursor-pointer"
         >
             {isLoading ? 'Logging in...' : 'Login'}
         </button>
