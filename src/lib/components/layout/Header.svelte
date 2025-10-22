@@ -96,18 +96,18 @@
                 <button class="lg:hidden p-2 text-gray-700 hover:text-blue-600 transition-colors">
                     <Search class="h-5 w-5"/>
                 </button>
-                <a href="/cart" class="relative p-2 text-gray-700 hover:text-blue-600 transition-colors group">
-                    <ShoppingCart class="h-6 w-6"/>
-                    <span
-                            class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full
-                                   h-5 w-5 flex items-center justify-center font-medium
-                                   group-hover:bg-blue-700 transition-colors"
-                    >
-                             {cartItemCount}
-                        </span>
-                </a>
                 <!-- User menu -->
                 {#if isAuthenticated}
+                    <a href="/cart" class="relative p-2 text-gray-700 hover:text-blue-600 transition-colors group">
+                        <ShoppingCart class="h-6 w-6"/>
+                        <span
+                                class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full
+                                   h-5 w-5 flex items-center justify-center font-medium
+                                   group-hover:bg-blue-700 transition-colors"
+                        >
+                             {cartItemCount}
+                        </span>
+                    </a>
                     <button class="flex items-center space-x-2 text-gray-700 hover:text-primary-600"
                             aria-label="account">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

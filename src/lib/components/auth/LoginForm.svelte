@@ -57,9 +57,10 @@
                     id="email"
                     type="email"
                     bind:value={email}
-                    class="input-field"
+                    class="input-underline"
                     class:border-red-500={error.email}
                     placeholder="your@email.com"
+                    autocomplete="one-time-code"
                     disabled={isLoading}
             />
             {#if error.email}
@@ -76,9 +77,10 @@
                     id="password"
                     type="password"
                     bind:value={password}
-                    class="input-field"
+                    class="input-underline pr-10"
                     class:border-red-500={error.password}
                     placeholder="••••••••"
+                    autocomplete="one-time-code"
                     disabled={isLoading}
             />
             {#if error.password}

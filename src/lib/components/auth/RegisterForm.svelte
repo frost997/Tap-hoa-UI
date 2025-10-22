@@ -72,8 +72,9 @@
                         id="userName"
                         type="text"
                         bind:value={formData.userName}
-                        class="input-field"
+                        class="input-underline"
                         class:border-red-500={errors.userName}
+                        autocomplete="one-time-code"
                         disabled={isLoading}
                 />
                 {#if errors.userName}
@@ -92,8 +93,9 @@
                     id="email"
                     type="email"
                     bind:value={formData.email}
-                    class="input-field"
+                    class="input-underline"
                     class:border-red-500={errors.email}
+                    autocomplete="one-time-code"
                     disabled={isLoading}
             />
             {#if errors.email}
@@ -110,8 +112,9 @@
                     id="password"
                     type="password"
                     bind:value={formData.password}
-                    class="input-field"
+                    class="input-underline"
                     class:border-red-500={errors.password}
+                    autocomplete="one-time-code"
                     disabled={isLoading}
             />
             {#if errors.password}
@@ -128,8 +131,9 @@
                     id="confirmPassword"
                     type="password"
                     bind:value={formData.confirmPassword}
-                    class="input-field"
+                    class="input-underline"
                     class:border-red-500={errors.confirmPassword}
+                    autocomplete="one-time-code"
                     disabled={isLoading}
             />
             {#if errors.confirmPassword}
