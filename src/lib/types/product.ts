@@ -2,7 +2,7 @@
 // STEP 3: TYPESCRIPT TYPES
 // =================================
 
-// src/lib/types/product.ts
+// src/lib/types/+page.svelte.ts
 export interface Product {
     id: string;
     productName: string;

@@ -114,7 +114,7 @@ function createCartStore() {
         // Clear entire cart
         subscribe,
 
-        // Get item count for specific product
+        // Get item count for specific +page.svelte
         updateQuantity: (productID: string, quantity: number) => {
             if (quantity <= 0) {
                 return cartStore.removeItem(productID);
