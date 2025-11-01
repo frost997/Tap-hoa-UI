@@ -3,24 +3,25 @@
     import {api} from '$lib/utils/api.js';
     import ProductGrid from '$lib/components/product/ProductGrid.svelte';
     import ProductFilters from '$lib/components/product/ProductFilter.svelte';
-    import type {Product, Category} from '$lib/types/product';
+    import type {Product} from '$lib/types/product';
 
-    let products: Product[] = [];
-    let categories: Category[] = [];
-    let loading = true;
-    let showFilters = false;
-
-    let filters = {
+    let products = $state<Product[]>([]);
+    // let categories = $state<Category[]>([]);
+    let loading = $state(true);
+    let showFilters = $state(false);
+    $inspect(products)
+    $inspect(loading);
+    let filters = $state({
         category: '',
         sort: 'created_desc',
         priceRange: {min: 0, max: 1000},
         search: ''
-    };
+    });
 
     onMount(async () => {
         await Promise.all([
             loadProducts(),
-            loadCategories()
+            // loadCategories()
         ]);
     });
 
@@ -28,38 +29,39 @@
         loading = true;
         try {
             const params: any = {
-                sort: filters.sort,
-                minPrice: filters.priceRange.min,
-                maxPrice: filters.priceRange.max,
+                skip: 0,
             };
 
-            if (filters.category) {
-                params.categoryId = filters.category;
-            }
+            // if (filters.category) params.categoryId = filters.category;
+            if (filters.search) params.search = filters.search;
 
-            if (filters.search) {
-                params.search = filters.search;
-            }
+            console.log('📡 Loading products with params:', params);
 
             const response = await api.products.getAll(params);
-            products = response.data;
+
+            console.log('✅ Products loaded:', response.data);
+
+            products = response.data.data;
+
         } catch (error) {
-            console.error('Failed to load products:', error);
+            console.error('❌ Failed to load products:', error);
+            products = [];
         } finally {
+
             loading = false;
         }
     }
 
-    async function loadCategories() {
-        try {
-            const response = await api.categories.getAll();
-            categories = response.data;
-        } catch (error) {
-            console.error('Failed to load categories:', error);
-        }
-    }
+    // async function loadCategories() {
+    //     try {
+    //         const response = await api.categories.getAll();
+    //         categories = response.data;
+    //     } catch (error) {
+    //         console.error('Failed to load categories:', error);
+    //         categories = [];
+    //     }
+    // }
 
-    // Svelte 5 way - direct function instead of event handler
     function handleFilterChange(detail: any) {
         filters = {...filters, ...detail};
         loadProducts();
@@ -117,15 +119,15 @@
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
 
             <!-- Filters Sidebar -->
-            <aside class:hidden={!showFilters} class="lg:block">
-                <ProductFilters
-                        {categories}
-                        selectedCategory={filters.category}
-                        sortBy={filters.sort}
-                        priceRange={filters.priceRange}
-                        onfilterchange={handleFilterChange}
-                />
-            </aside>
+            <!--            <aside class:hidden={!showFilters} class="lg:block">-->
+            <!--                <ProductFilters-->
+            <!--                        {categories}-->
+            <!--                        bind:selectedCategory={filters.category}-->
+            <!--                        bind:sortBy={filters.sort}-->
+            <!--                        bind:priceRange={filters.priceRange}-->
+            <!--                        onfilterchange={handleFilterChange}-->
+            <!--                />-->
+            <!--            </aside>-->
 
             <!-- Products Grid -->
             <div class="lg:col-span-3">

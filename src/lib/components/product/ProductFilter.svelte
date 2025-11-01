@@ -1,18 +1,25 @@
-<!-- src/lib/components/product/ProductFilters.svelte -->
 <script lang="ts">
     import type { Category } from '$lib/types/product';
 
-    export let categories: Category[] = [];
-    export let selectedCategory: string = '';
-    export let sortBy: string = 'created_desc';
-    export let priceRange: { min: number; max: number } = { min: 0, max: 1000 };
+    interface Props {
+        categories?: Category[];
+        selectedCategory?: string;
+        sortBy?: string;
+        priceRange?: { min: number; max: number };
+        onfilterchange?: (detail: {
+            category: string;
+            sort: string;
+            priceRange: { min: number; max: number };
+        }) => void;
+    }
 
-    // Event callback prop (Svelte 5 way)
-    export let onFilterChange: ((detail: {
-        category: string;
-        sort: string;
-        priceRange: { min: number; max: number };
-    }) => void) | undefined = undefined;
+    let {
+        categories = [],
+        selectedCategory = $bindable(''),
+        sortBy = $bindable('created_desc'),
+        priceRange = $bindable({ min: 0, max: 1000 }),
+        onfilterchange
+    }: Props = $props();
 
     const sortOptions = [
         { value: 'name_asc', label: 'Name A-Z' },
@@ -24,22 +31,22 @@
 
     function handleCategoryChange(categoryId: string) {
         selectedCategory = categoryId;
-        onFilterChange?.({ category: categoryId, sort: sortBy, priceRange });
+        onfilterchange?.({ category: categoryId, sort: sortBy, priceRange });
     }
 
     function handleSortChange() {
-        onFilterChange?.({ category: selectedCategory, sort: sortBy, priceRange });
+        onfilterchange?.({ category: selectedCategory, sort: sortBy, priceRange });
     }
 
     function handlePriceChange() {
-        onFilterChange?.({ category: selectedCategory, sort: sortBy, priceRange });
+        onfilterchange?.({ category: selectedCategory, sort: sortBy, priceRange });
     }
 
     function clearFilters() {
         selectedCategory = '';
         sortBy = 'created_desc';
         priceRange = { min: 0, max: 1000 };
-        onFilterChange?.({ category: '', sort: 'created_desc', priceRange: { min: 0, max: 1000 } });
+        onfilterchange?.({ category: '', sort: 'created_desc', priceRange: { min: 0, max: 1000 } });
     }
 </script>
 

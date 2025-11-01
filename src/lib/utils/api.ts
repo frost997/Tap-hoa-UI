@@ -66,8 +66,9 @@ export const api = {
 
     // Product endpoints
     products: {
+        getAll: (params = {}) => apiClient.get('/products', {params}),
         getByName: (params = {}) => apiClient.get('/products', {params}),
-        getById: (id: any) => apiClient.get(`/products/${id}`),
+        getDetail: (id: any) => apiClient.get(`/products/${id}`),
         // getByCategory: (categoryId: any, params = {}) => apiClient.get(`/products/category/${categoryId}`, {params}),
         // search: (query: any, params = {}) => apiClient.get(`/products/search`, {params: {q: query, ...params}}),
     },

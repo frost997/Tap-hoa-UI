@@ -2,24 +2,31 @@
     import ProductCard from './ProductCard.svelte';
     import type {Product} from '$lib/types/product';
 
-    export let products: Product[] = [];
-    export let loading: boolean = false;
+    interface Props {
+        products?: Product[];
+        loading?: boolean;
+    }
+
+
+    let {products = [], loading = false}: Props = $props();
+    $inspect(products);
+    $inspect(loading);
 </script>
 
-{#if loading}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {#each Array(8) as _}
-            <div class="card overflow-hidden animate-pulse">
-                <div class="bg-gray-200 h-64 w-full"></div>
-                <div class="p-4">
-                    <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                    <div class="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
-                    <div class="h-10 bg-gray-200 rounded"></div>
-                </div>
-            </div>
-        {/each}
-    </div>
-{:else if products.length === 0}
+<!--{#if loading}-->
+<!--    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">-->
+<!--        {#each Array(8) as _, i (i)}-->
+<!--            <div class="card overflow-hidden animate-pulse">-->
+<!--                <div class="bg-gray-200 h-64 w-full"></div>-->
+<!--                <div class="p-4">-->
+<!--                    <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>-->
+<!--                    <div class="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>-->
+<!--                    <div class="h-10 bg-gray-200 rounded"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        {/each}-->
+<!--    </div>-->
+{#if products.length === 0}
     <div class="text-center py-12">
         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
