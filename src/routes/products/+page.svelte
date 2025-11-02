@@ -9,8 +9,6 @@
     // let categories = $state<Category[]>([]);
     let loading = $state(true);
     let showFilters = $state(false);
-    $inspect(products)
-    $inspect(loading);
     let filters = $state({
         category: '',
         sort: 'created_desc',
@@ -135,7 +133,7 @@
                     {loading ? 'Loading...' : `${products.length} products found`}
                 </div>
 
-                <ProductGrid {products} {loading}/>
+                <ProductGrid productList={products} loading={loading}/>
             </div>
 
         </div>

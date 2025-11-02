@@ -20,7 +20,7 @@
     <!-- Image -->
     <a href="/products/{product.id}" class="block relative overflow-hidden bg-gray-100">
         <img
-                src={product.imageURL?.[0]?.url || '/placeholder-products.jpg'}
+                src={product.imageURL || '/placeholder-products.jpg'}
                 alt={product.productName}
                 class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
         />
