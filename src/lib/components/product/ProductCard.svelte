@@ -11,8 +11,8 @@
     }
 
     // Calculate discount percentage if comparePrice exists
-    // $: discountPercent = products.comparePrice
-    //     ? Math.round(((products.comparePrice - products.price) / products.comparePrice) * 100)
+    // $: discountPercent = products-config.comparePrice
+    //     ? Math.round(((products-config.comparePrice - products-config.price) / products-config.comparePrice) * 100)
     //     : 0;
 </script>
 
@@ -20,7 +20,7 @@
     <!-- Image -->
     <a href="/products/{product.id}" class="block relative overflow-hidden bg-gray-100">
         <img
-                src={product.imageURL || '/placeholder-products.jpg'}
+                src={product.imageURL || '/placeholder-products-config.jpg'}
                 alt={product.productName}
                 class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
         />
@@ -41,8 +41,8 @@
     <!-- Content -->
     <div class="p-4">
         <!-- Category -->
-        <!--{#if products.category}-->
-        <!--    <p class="text-xs text-gray-500 mb-1">{products.category.name}</p>-->
+        <!--{#if products-config.category}-->
+        <!--    <p class="text-xs text-gray-500 mb-1">{products-config.category.name}</p>-->
         <!--{/if}-->
 
         <!-- Product Name -->

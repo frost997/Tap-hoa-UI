@@ -3,7 +3,7 @@
     import type {Product} from '$lib/types/product';
 
     // interface Props {
-    //     products?: Product[];
+    //     products-config?: Product[];
     //     loading?: boolean;
     // }
 

@@ -33,7 +33,7 @@
             // if (filters.category) params.categoryId = filters.category;
             if (filters.search) params.search = filters.search;
 
-            console.log('📡 Loading products with params:', params);
+            console.log('📡 Loading products-config with params:', params);
 
             const response = await api.products.getAll(params);
 
@@ -42,7 +42,7 @@
             products = response.data.data;
 
         } catch (error) {
-            console.error('❌ Failed to load products:', error);
+            console.error('❌ Failed to load products-config:', error);
             products = [];
         } finally {
 

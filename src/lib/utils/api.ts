@@ -69,8 +69,8 @@ export const api = {
         getAll: (params = {}) => apiClient.get('/products', {params}),
         getByName: (params = {}) => apiClient.get('/products', {params}),
         getDetail: (id: any) => apiClient.get(`/products/${id}`),
-        // getByCategory: (categoryId: any, params = {}) => apiClient.get(`/products/category/${categoryId}`, {params}),
-        // search: (query: any, params = {}) => apiClient.get(`/products/search`, {params: {q: query, ...params}}),
+        // getByCategory: (categoryId: any, params = {}) => apiClient.get(`/products-config/category/${categoryId}`, {params}),
+        // search: (query: any, params = {}) => apiClient.get(`/products-config/search`, {params: {q: query, ...params}}),
     },
 
     // Category endpoints
@@ -95,10 +95,10 @@ export const api = {
 
     // Admin endpoints
     // admin: {
-    //     products: {
-    //         create: (productData: any) => apiClient.post('/admin/products', productData),
-    //         update: (id: any, productData: any) => apiClient.put(`/admin/products/${id}`, productData),
-    //         delete: (id: any) => apiClient.delete(`/admin/products/${id}`),
+    //     products-config: {
+    //         create: (productData: any) => apiClient.post('/admin/products-config', productData),
+    //         update: (id: any, productData: any) => apiClient.put(`/admin/products-config/${id}`, productData),
+    //         delete: (id: any) => apiClient.delete(`/admin/products-config/${id}`),
     //     },
     //     users: {
     //         getAll: (params = {}) => apiClient.get('/admin/users', {params}),

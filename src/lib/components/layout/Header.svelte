@@ -59,7 +59,7 @@
                     {href: '/', label: 'Home'},
                     {href: '/products', label: 'Products'},
                     {href: '/categories', label: 'Categories'},
-                    {href: '/about', label: 'About'},
+                    {href: '/products-config', label: 'Admin'},
                 ] as item}
                     <a
                             href={item.href}
