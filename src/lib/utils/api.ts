@@ -3,7 +3,7 @@
 // =================================
 // src/lib/utils/api.js
 import axios from 'axios';
-import type {crecidential} from "$lib/utils/type";
+import type {credential} from "$lib/utils/type";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT) || 10000;
@@ -48,7 +48,7 @@ apiClient.interceptors.response.use(
 export const api = {
     // Auth endpoints
     auth: {
-        login: (credentials: crecidential) => apiClient.post('/auth/login', credentials),
+        login: (credentials: credential) => apiClient.post('/auth/login', credentials),
         register: (userData: any) => apiClient.post('/auth/signUp', userData),
         logout: () => apiClient.post('/auth/logout'),
         getProfile: () => apiClient.get('/auth/profile'),

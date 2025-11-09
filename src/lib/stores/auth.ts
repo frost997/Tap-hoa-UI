@@ -4,22 +4,32 @@ import {browser} from '$app/environment';
 import {api} from '$lib/utils/api.js';
 import axios from "axios";
 
+type user = {
+    id: string,
+    email: string,
+    userName: string,
+    roles: string[],
+}
+
 type auth = {
-    user: string | null,
+    user: user,
     token: string | null,
     isLoading: boolean | false,
     isAuthenticated: boolean | false,
-    role: string[]
 }
 
 
 function createAuthStore() {
     let authPayload: auth = {
-        user: null,
+        user: {
+            id: "",
+            email: "",
+            userName: "",
+            roles: [],
+        },
         token: null,
         isLoading: false,
         isAuthenticated: false,
-        role: []
     }
     const {subscribe, set, update} = writable(authPayload);
 
@@ -34,7 +44,6 @@ function createAuthStore() {
                 token,
                 isLoading: false,
                 isAuthenticated: true,
-                role: []
             });
         }
     }
@@ -48,7 +57,7 @@ function createAuthStore() {
 
             try {
                 const response = await api.auth.login(credentials);
-                const {user, access_token: token, roles} = response.data;
+                const {user, access_token: token} = response.data;
 
                 // Store in localStorage
                 if (browser) {
@@ -61,7 +70,6 @@ function createAuthStore() {
                     token,
                     isLoading: false,
                     isAuthenticated: true,
-                    role: roles
                 });
 
                 return {
@@ -87,11 +95,12 @@ function createAuthStore() {
 
             try {
                 const response = await api.auth.register(userData);
-                const {user, token, roles} = response.data;
+                const {user, token} = response.data;
 
                 if (browser) {
                     localStorage.setItem('auth_token', token);
                     localStorage.setItem('user', JSON.stringify(user));
+
                 }
 
                 set({
@@ -99,7 +108,6 @@ function createAuthStore() {
                     token,
                     isLoading: false,
                     isAuthenticated: true,
-                    role: roles
                 });
 
                 return {success: true, error: ''};
@@ -127,14 +135,19 @@ function createAuthStore() {
             if (browser) {
                 localStorage.removeItem('auth_token');
                 localStorage.removeItem('user');
+                localStorage.removeItem('role');
             }
 
             set({
-                user: null,
+                user: {
+                    id: "",
+                    email: "",
+                    userName: "",
+                    roles: [],
+                },
                 token: null,
                 isLoading: false,
                 isAuthenticated: false,
-                role: []
             });
         },
 

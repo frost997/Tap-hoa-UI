@@ -10,13 +10,13 @@
     import {authStore} from "$lib/stores/auth";
     import {cartStore} from "$lib/stores/cart";
 
-    $: isAuthenticated = $authStore.isAuthenticated;
-    // $: user = $authStore.user;
-    $: role = $authStore.role;
-    $: cartItemCount = $cartStore.totalItems;
-
-    let isMenuOpen = false;
-    let searchQuery = '';
+    // Read store values reactively
+    const currentPath = $derived(page.url.pathname)
+    const isAuthenticated = $derived($authStore.isAuthenticated);
+    const cartItemCount = $derived($cartStore.totalItems);
+    const roles = $derived($authStore.user.roles);
+    let isMenuOpen = $state(false);
+    let searchQuery = $state('');
 
     function handleLogout() {
         authStore.logout();
@@ -24,11 +24,8 @@
         goto('/');
     }
 
-    // Check active route
-    const isActive = (path: string) => {
-        if (path === '/') return page.url.pathname === '/';
-        return page.url.pathname.startsWith(path);
-    };
+
+    const isActive = (path: string) => path === '/' ? currentPath === '/' : currentPath === path;
 
 
     const handleSearch = (e: Event) => {
@@ -59,7 +56,6 @@
                     {href: '/', label: 'Home'},
                     {href: '/products', label: 'Products'},
                     {href: '/categories', label: 'Categories'},
-                    {href: '/products-config', label: 'Admin'},
                 ] as item}
                     <a
                             href={item.href}
@@ -71,14 +67,18 @@
                         {item.label}
                     </a>
                 {/each}
-                {#if isAuthenticated && role?.includes('admin')}
-                    <a href="/admin" class="text-gray-700 hover:text-primary-600">Admin</a>
+                {#if isAuthenticated && roles?.some(rl => rl === 'ADMIN')}
+                    <a href="/products-config" class="px-3 py-2 text-sm font-medium transition-colors duration-200
+                            {isActive('/products-config')
+                                ? 'text-blue-600 border-b-2 border-blue-600'
+                                : 'text-gray-700 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600'}"
+                    >Admin</a>
                 {/if}
             </nav>
 
             <!-- Search bar (desktop only) -->
             <div class="hidden lg:flex flex-1 max-w-lg mx-8">
-                <form on:submit={handleSearch} class="relative w-full">
+                <form onsubmit={handleSearch} class="relative w-full">
                     <input
                             type="text"
                             bind:value={searchQuery}
@@ -125,7 +125,7 @@
                             Orders
                         </a>
                         <button
-                                on:click={handleLogout}
+                                onclick={handleLogout}
                                 class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         >
                             Logout
@@ -142,7 +142,7 @@
                 <!-- Mobile Menu Toggle -->
                 <button
                         class="md:hidden p-2 text-gray-700 hover:text-blue-600 transition-colors"
-                        on:click={() => (isMenuOpen = !isMenuOpen)}
+                        onclick={() => (isMenuOpen = !isMenuOpen)}
                         aria-label="Toggle menu"
                 >
                     {#if isMenuOpen}
