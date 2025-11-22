@@ -4,7 +4,7 @@
 
 // src/lib/types/+page.svelte.ts
 export interface Product {
-    id: string;
+    _id: string;
     productName: string;
     historyID: string;
     price: number;

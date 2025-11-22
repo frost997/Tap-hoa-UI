@@ -1,8 +1,8 @@
 <script>
 
-    import Product from "$lib/components/product/user/Product.svelte";
+    import Product from "$lib/components/product/Product.svelte";
 </script>
 
 <div class="bg-gray-50 min-h-screen py-8">
-    <Product/>
+    <Product currentView='list'/>
 </div>

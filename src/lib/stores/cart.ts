@@ -37,7 +37,7 @@ function createCartStore() {
         addItem: (product: Product, quantity = 1, variant = null) => {
             update((cart: Cart) => {
                 const existingItemIndex = cart.items.findIndex(item =>
-                    item.productID === product.id
+                    item.productID === product._id
                 );
 
                 let newItems: CartItem[];
@@ -48,7 +48,7 @@ function createCartStore() {
                 } else {
                     // Add new item
                     const newItem = {
-                        productID: product.id,
+                        productID: product._id,
                         userID: "",
                         productName: product.productName,
                         quantity: quantity,
