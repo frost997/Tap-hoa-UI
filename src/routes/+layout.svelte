@@ -30,7 +30,7 @@
                 <div class="flex items-start justify-between">
                     <p class="text-sm text-gray-800">{toast.message}</p>
                     <button
-                            on:click={() => uiStore.removeToast(toast.id)}
+                            onclick={() => uiStore.removeToast(toast.id)}
                             class="ml-4 text-gray-400 hover:text-gray-600"
                     >
                         ×

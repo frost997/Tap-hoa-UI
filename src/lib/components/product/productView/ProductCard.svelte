@@ -63,7 +63,7 @@
 
         <!-- Add to Cart Button -->
         <button
-                on:click={addToCart}
+                onclick={addToCart}
                 class="
                 w-full
                 flex items-center justify-center gap-2

@@ -1,6 +1,7 @@
 <script lang="ts">
     import ProductCard from './ProductCard.svelte';
     import type {Product} from '$lib/types/product';
+    import {ListFilterPlus} from "lucide-svelte";
 
     // interface Props {
     //     products-config?: Product[];
@@ -10,7 +11,6 @@
     const {productList, loading} = $props<{ productList: Product[], loading: boolean }>();
 
 </script>
-
 {#if loading}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {#each Array(8) as _, i (i)}

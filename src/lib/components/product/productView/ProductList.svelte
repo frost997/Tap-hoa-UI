@@ -1,8 +1,8 @@
 <script lang="ts">
     import ProductListRow from './ProductListRow.svelte';
-    import type { Product } from '$lib/types/product';
+    import type {Product} from '$lib/types/product';
 
-    const { productList, loading } = $props<{
+    const {productList, loading} = $props<{
         productList: Product[],
         loading: boolean
     }>();
@@ -27,11 +27,21 @@
             <tbody>
             {#each Array(5) as _, i (i)}
                 <tr class="animate-pulse">
-                    <td class="px-4 py-4"><div class="h-4 bg-gray-200 rounded w-2/3"></div></td>
-                    <td class="px-4 py-4"><div class="h-4 bg-gray-200 rounded w-1/2"></div></td>
-                    <td class="px-4 py-4"><div class="h-4 bg-gray-200 rounded w-1/3"></div></td>
-                    <td class="px-4 py-4"><div class="h-4 bg-gray-200 rounded w-1/3"></div></td>
-                    <td class="px-4 py-4 text-right"><div class="h-8 bg-gray-200 rounded w-20"></div></td>
+                    <td class="px-4 py-4">
+                        <div class="h-4 bg-gray-200 rounded w-2/3"></div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="h-4 bg-gray-200 rounded w-1/3"></div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="h-4 bg-gray-200 rounded w-1/3"></div>
+                    </td>
+                    <td class="px-4 py-4 text-right">
+                        <div class="h-8 bg-gray-200 rounded w-20"></div>
+                    </td>
                 </tr>
             {/each}
             </tbody>
@@ -48,7 +58,7 @@
         {:else}
             <tbody class="divide-y divide-gray-200">
             {#each productList as product (product._id)}
-                <ProductListRow {product} />
+                <ProductListRow {product}/>
             {/each}
             </tbody>
         {/if}
