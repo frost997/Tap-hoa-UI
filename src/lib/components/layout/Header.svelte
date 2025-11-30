@@ -98,40 +98,48 @@
                 </button>
                 <!-- User menu -->
                 {#if isAuthenticated}
-                    <a href="/cart" class="relative p-2 text-gray-700 hover:text-blue-600 transition-colors group">
+                    <!-- CART BUTTON -->
+                    <a href="/cart" class="relative p-2 text-gray-700 hover:text-blue-600 transition-colors">
                         <ShoppingCart class="h-6 w-6"/>
+
                         <span
                                 class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full
-                                   h-5 w-5 flex items-center justify-center font-medium
-                                   group-hover:bg-blue-700 transition-colors"
+                   h-5 w-5 flex items-center justify-center font-medium"
                         >
-                             {cartItemCount}
-                        </span>
+            {cartItemCount}
+        </span>
                     </a>
-                    <button class="flex items-center space-x-2 text-gray-700 hover:text-primary-600"
-                            aria-label="account">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </button>
 
-                    <!-- Dropdown -->
-                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden group-hover:block">
-                        <a href="/account" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            My Account
-                        </a>
-                        <a href="/account/orders" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            Orders
-                        </a>
-                        <button
-                                onclick={handleLogout}
-                                class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                            Logout
+                    <div class="relative group">
+                        <!-- USER BUTTON -->
+                        <button class="flex items-center space-x-2 text-gray-700 hover:text-primary-600">
+                            <User/>
                         </button>
+
+                        <!-- DROPDOWN -->
+                        <div
+                                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1
+               opacity-0 invisible
+               group-hover:visible group-hover:opacity-100
+               transition-all duration-150"
+                        >
+                            <a href="/account" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                My Account
+                            </a>
+                            <a href="/account/orders" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Orders
+                            </a>
+                            <button
+                                    onclick={handleLogout}
+                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            >
+                                Logout
+                            </button>
+                        </div>
                     </div>
+
                 {:else}
+
                     <a href="/auth/login"
                        class="flex items-center space-x-2 p-2 text-gray-700 hover:text-blue-600 transition-colors">
                         <User class="h-6 w-6"/>

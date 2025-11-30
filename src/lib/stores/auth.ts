@@ -13,7 +13,7 @@ type user = {
 
 type auth = {
     user: user,
-    token: string | null,
+    // token: string | null,
     isLoading: boolean | false,
     isAuthenticated: boolean | false,
 }
@@ -27,7 +27,7 @@ function createAuthStore() {
             userName: "",
             roles: [],
         },
-        token: null,
+        // token: null,
         isLoading: false,
         isAuthenticated: false,
     }
@@ -35,13 +35,13 @@ function createAuthStore() {
 
     // Initialize auth state from localStorage
     if (browser) {
-        const token: string | null = localStorage.getItem('auth_token');
+        // const token: string | null = localStorage.getItem('auth_token');
         const user: string | null = localStorage.getItem('user');
 
-        if (token && user) {
+        if (user) {
             set({
                 user: JSON.parse(user),
-                token,
+                // token,
                 isLoading: false,
                 isAuthenticated: true,
             });
@@ -57,17 +57,16 @@ function createAuthStore() {
 
             try {
                 const response = await api.auth.login(credentials);
-                const {user, access_token: token} = response.data;
+                const {user} = response.data;
 
                 // Store in localStorage
                 if (browser) {
-                    localStorage.setItem('auth_token', token);
+                    // localStorage.setItem('auth_token', token);
                     localStorage.setItem('user', JSON.stringify(user));
                 }
 
                 set({
                     user,
-                    token,
                     isLoading: false,
                     isAuthenticated: true,
                 });
@@ -105,7 +104,7 @@ function createAuthStore() {
 
                 set({
                     user,
-                    token,
+                    // token,
                     isLoading: false,
                     isAuthenticated: true,
                 });
@@ -133,7 +132,7 @@ function createAuthStore() {
             }
 
             if (browser) {
-                localStorage.removeItem('auth_token');
+                // localStorage.removeItem('auth_token');
                 localStorage.removeItem('user');
                 localStorage.removeItem('role');
             }
@@ -145,7 +144,7 @@ function createAuthStore() {
                     userName: "",
                     roles: [],
                 },
-                token: null,
+                // token: null,
                 isLoading: false,
                 isAuthenticated: false,
             });

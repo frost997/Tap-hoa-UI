@@ -125,51 +125,52 @@
         {/if}
     </div>
     <!-- Page Header + Search Bar -->
-    <div class="relative w-full mb-8">
+    {#if mode !== 'create'}
+        <div class="relative w-full mb-8">
 
-        <!-- Unified Search + Filter Group -->
-        <div class="flex w-full border border-gray-300 rounded-lg overflow-hidden">
+            <!-- Unified Search + Filter Group -->
+            <div class="flex w-full border border-gray-300 rounded-lg overflow-hidden">
 
-            <!-- Search Input -->
-            <div class="relative flex-1">
-                <input
-                        type="text"
-                        placeholder="Search products..."
-                        oninput={handleSearch}
-                        class="w-full px-4 py-3 pr-10 border-none focus:ring-2 focus:ring-primary-500 outline-none"
-                />
+                <!-- Search Input -->
+                <div class="relative flex-1">
+                    <input
+                            type="text"
+                            placeholder="Search products..."
+                            oninput={handleSearch}
+                            class="w-full px-4 py-3 pr-10 border-none focus:ring-2 focus:ring-primary-500 outline-none"
+                    />
 
-                <!-- Search Icon -->
-                <svg
-                        class="absolute right-3 top-3.5 w-5 h-5 text-gray-400"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    <!-- Search Icon -->
+                    <svg
+                            class="absolute right-3 top-3.5 w-5 h-5 text-gray-400"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+
+                <!-- Filter Button -->
+                <button
+                        onclick={() => showFilters = true}
+                        class="px-4 bg-gray-100 hover:bg-gray-200 border-l border-gray-300 flex items-center justify-center"
                 >
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
+                    <ListFilterPlus/>
+                </button>
+
             </div>
-
-            <!-- Filter Button -->
-            <button
-                    onclick={() => showFilters = true}
-                    class="px-4 bg-gray-100 hover:bg-gray-200 border-l border-gray-300 flex items-center justify-center"
-            >
-                <ListFilterPlus/>
-            </button>
-
         </div>
-    </div>
-
+    {/if}
 
     <!-- Main Layout Row -->
     <div class="flex gap-8">
 
         <!-- Product List -->
         <div class="flex-1">
-            <div class="mb-4 text-sm text-gray-600">
-                {loading ? 'Loading...' : `${products.length} products found`}
-            </div>
             {#if mode === 'view'}
+                <div class="mb-4 text-sm text-gray-600">
+                    {loading ? 'Loading...' : `${products.length} products found`}
+                </div>
                 <div transition:fade>
                     {#if currentView === 'grid'}
                         <ProductGrid productList={products} loading={loading}/>

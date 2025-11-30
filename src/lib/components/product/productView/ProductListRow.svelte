@@ -7,6 +7,7 @@
     const isOutOfStock = $derived(product.on_hand <= 0);
 
     function viewDetail() {
+
     }
 </script>
 
