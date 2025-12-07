@@ -97,7 +97,7 @@
                     <Search class="h-5 w-5"/>
                 </button>
                 <!-- User menu -->
-                {#if isAuthenticated}
+                {#if isAuthenticated && roles?.some(rl => rl === 'ADMIN')}
                     <!-- CART BUTTON -->
                     <a href="/cart" class="relative p-2 text-gray-700 hover:text-blue-600 transition-colors">
                         <ShoppingCart class="h-6 w-6"/>

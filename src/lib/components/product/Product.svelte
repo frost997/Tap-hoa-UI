@@ -12,7 +12,7 @@
 
     const {currentView, admin} = $props<{ currentView: 'grid' | 'list', admin?: boolean | null }>();
     let products = $state<Product[]>([]);
-    let mode = $state<'view' | 'create' | 'import'>('view')
+    let mode = $state<'view' | 'create' | 'import' | 'edit'>('view')
     // let categories = $state<Category[]>([]);
     let loading = $state(true);
     let showFilters = $state(false);
@@ -22,6 +22,11 @@
         priceRange: {min: 0, max: 1000},
         search: ''
     });
+
+
+    function handleEdit() {
+        mode = "edit";
+    }
 
     onMount(async () => {
         await Promise.all([
@@ -88,6 +93,9 @@
                 break;
             case 'create':
                 mode = 'create';
+                break;
+            case 'edit':
+                mode = 'edit';
                 break;
         }
     }
@@ -175,11 +183,11 @@
                     {#if currentView === 'grid'}
                         <ProductGrid productList={products} loading={loading}/>
                     {:else if currentView === 'list'}
-                        <ProductList productList={products} loading={loading}/>
+                        <ProductList productList={products} loading={loading} onEdit={handleEdit}/>
                     {/if}
                 </div>
             {/if}
-            {#if mode === 'create'}
+            {#if mode === 'create' || mode === 'edit'}
                 <div transition:fade>
                     <ProductDetail/>
                 </div>

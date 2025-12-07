@@ -2,12 +2,15 @@
     import type {Product} from '$lib/types/product';
     import {Pencil} from "lucide-svelte";
 
-    const {product} = $props<{ product: Product }>();
+    let {product, onEdit} = $props<{
+        product: Product,
+        onEdit: (p: Product) => void
+    }>();
 
     const isOutOfStock = $derived(product.on_hand <= 0);
 
-    function viewDetail() {
-
+    function editMode() {
+        mode = 'edit'
     }
 </script>
 
@@ -40,7 +43,7 @@
     <!-- Action -->
     <td class="px-4 py-4 text-right">
         <button
-                onclick={viewDetail}
+                onclick={() => onEdit()}
                 class="p-2 rounded hover:bg-gray-200 active:scale-95 transition transform duration-100"
                 aria-label="Edit"
         >

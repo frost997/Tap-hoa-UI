@@ -2,9 +2,10 @@
     import ProductListRow from './ProductListRow.svelte';
     import type {Product} from '$lib/types/product';
 
-    const {productList, loading} = $props<{
+    let {productList, loading, onEdit} = $props<{
         productList: Product[],
-        loading: boolean
+        loading: boolean,
+        onEdit: (p: Product) => void
     }>();
 </script>
 
@@ -58,7 +59,7 @@
         {:else}
             <tbody class="divide-y divide-gray-200">
             {#each productList as product (product._id)}
-                <ProductListRow {product}/>
+                <ProductListRow {product} {onEdit}/>
             {/each}
             </tbody>
         {/if}
