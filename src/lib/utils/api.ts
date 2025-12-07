@@ -53,6 +53,7 @@ export const api = {
         getByName: (params = {}) => apiClient.get('/products', {params}),
         getDetail: (id: any) => apiClient.get(`/products/${id}`),
         createProduct: (product: any) => apiClient.post(`/products`, product),
+        updateProduct: (product: any) => apiClient.post(`/products`, product),
         // getByCategory: (categoryId: any, params = {}) => apiClient.get(`/products-config/category/${categoryId}`, {params}),
         // search: (query: any, params = {}) => apiClient.get(`/products-config/search`, {params: {q: query, ...params}}),
     },

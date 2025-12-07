@@ -10,7 +10,7 @@ export interface Product {
     price: number;
     on_hand: number;
     saleCoupon: number;
-    imageURL: string;
+    imageURL: string[];
     createdAt: string;
     updatedAt: string;
 }

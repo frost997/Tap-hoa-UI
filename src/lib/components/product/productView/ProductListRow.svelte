@@ -9,9 +9,7 @@
 
     const isOutOfStock = $derived(product.on_hand <= 0);
 
-    function editMode() {
-        mode = 'edit'
-    }
+
 </script>
 
 <tr class="hover:bg-gray-50 transition-colors">
@@ -43,7 +41,7 @@
     <!-- Action -->
     <td class="px-4 py-4 text-right">
         <button
-                onclick={() => onEdit()}
+                onclick={() => onEdit(product)}
                 class="p-2 rounded hover:bg-gray-200 active:scale-95 transition transform duration-100"
                 aria-label="Edit"
         >

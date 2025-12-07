@@ -3,6 +3,7 @@
     import {Plus, X} from "lucide-svelte";
     import {productTitle} from "$lib/stores/title";
     import {productStore} from "$lib/stores/product";
+    import type {Product} from "$lib/types/product";
 
     productTitle.set("Product Information");
 
@@ -11,6 +12,8 @@
         name: string;
         url: string;
     };
+
+    let {product, mode} = $props<{ product: Product, mode: string }>();
 
     // State
     let imageUrl: string = $state('');
@@ -24,12 +27,27 @@
     let coupon: string = $state("");       // ADDED Sales Coupon
     let showAdditional: boolean = $state(false);
 
+    if (product) {
+        name = product.productName
+        on_hand = product.on_hand
+        brand = product.brand
+        categories = product.categories
+        price = product.price
+        coupon = product.coupon
+        if (product.imageURL) {
+            product.imageURL.forEach((image: string) => {
+                uploadedImages.push({name: product.productName, url: image})
+            })
+        }
+    }
+    $inspect(product)
+
     function addImageUrl() {
         if (!imageUrl.trim()) return;
 
         uploadedImages = [
             ...uploadedImages,
-            {name: "url-image", url: imageUrl}
+            {name: product.productName ?? 'url-image', url: imageUrl}
         ];
 
         imageUrl = "";
@@ -45,6 +63,16 @@
             images: uploadedImages[0].url,
             brand,
             categories,
+            price,
+            on_hand,
+        };
+        productStore.addProduct([product])
+        console.log("NEW PRODUCT:", product);
+    }
+
+    function updateProduct() {
+        const updateProduct = {
+            productID: product._id,
             price,
             on_hand,
         };
@@ -166,8 +194,8 @@
     <!-- Footer -->
     <div class="footer">
         <button class="cancel-btn">Cancel</button>
-        <button class="continue-btn" onclick={() => addProduct()}>
-            Confirm
+        <button class="continue-btn" onclick={() => { mode === 'edit' ? "Update" : addProduct() }}>
+            { mode === 'edit' ? "Update" : "Confirm" }
         </button>
     </div>
 </main>
@@ -285,20 +313,8 @@
 
     /* Inputs */
     .text-input,
-    .textarea {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        font-size: 14px;
-    }
 
-    .textarea {
-        min-height: 120px;
-        resize: none;
-    }
-
-    /* Additional Info */
+        /* Additional Info */
     .additional-toggle {
         margin-top: 20px;
         cursor: pointer;

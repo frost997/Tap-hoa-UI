@@ -12,6 +12,7 @@
 
     const {currentView, admin} = $props<{ currentView: 'grid' | 'list', admin?: boolean | null }>();
     let products = $state<Product[]>([]);
+    let product = $state<Product | any>()
     let mode = $state<'view' | 'create' | 'import' | 'edit'>('view')
     // let categories = $state<Category[]>([]);
     let loading = $state(true);
@@ -24,8 +25,9 @@
     });
 
 
-    function handleEdit() {
+    function handleEdit(prod: Product) {
         mode = "edit";
+        product = prod
     }
 
     onMount(async () => {
@@ -117,7 +119,7 @@
                 <button class="px-4 py-2 border border-gray-300 rounded-lg bg-white hover:bg-gray-100">
                     Export
                 </button>
-                {#if mode !== "create"}
+                {#if mode !== "create" && mode !== "edit"}
                     <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
                             onclick={() => handleChangeMode('create')}>
                         Create Product
@@ -189,7 +191,7 @@
             {/if}
             {#if mode === 'create' || mode === 'edit'}
                 <div transition:fade>
-                    <ProductDetail/>
+                    <ProductDetail {product} {mode}/>
                 </div>
             {/if}
         </div>

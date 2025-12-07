@@ -2,13 +2,22 @@
     import {cartStore} from '$lib/stores/cart.js';
     import {uiStore} from '$lib/stores/ui.js';
     import type {Product} from '$lib/types/product';
-    import {ShoppingCart} from "lucide-svelte";
+    import {ChevronLeft, ChevronRight, ShoppingCart} from "lucide-svelte";
 
-    export let product: Product;
+    let {product} = $props<{ product: Product }>();
+    let index = $state(0);
 
-    function addToCart() {
-        cartStore.addItem(product, 1);
-        uiStore.addToast(`${product.productName} added to cart!`, 'success');
+    // function addToCart() {
+    //     cartStore.addItem(product, 1);
+    //     uiStore.addToast(`${product.productName} added to cart!`, 'success');
+    // }
+
+    function prev() {
+        index = (index - 1 + product.imageURL.length) % product.imageURL.length;
+    }
+
+    function next() {
+        index = (index + 1) % product.imageURL.length;
     }
 
     // Calculate discount percentage if comparePrice exists
@@ -30,15 +39,39 @@
 >
     <!-- Image Wrapper with padding and gray background -->
     <div class="p-3">
-        <div class="bg-gray-100 rounded-md aspect-square p-2 flex items-center justify-center">
+        <div class="relative bg-gray-100 rounded-md aspect-square p-2 flex items-center justify-center overflow-hidden">
+
+            <!-- IMAGE -->
             <img
-                    src={product.imageURL}
+                    src={product.imageURL[index] ?? "/placeholder.png"}
                     alt={product.productName}
-                    class="max-w-full max-h-full object-contain"
+                    class="w-full h-full object-cover transition-all duration-300"
             />
+
+            <!-- PREV BUTTON (inside image) -->
+            <!--{#if product.imageURL.length > 1}-->
+                <button
+                        onclick={prev}
+                        class="absolute left-2 top-1/2 -translate-y-1/2
+                       bg-white/70 hover:bg-white rounded-full p-1 shadow
+                       flex items-center justify-center"
+                >
+                    <ChevronLeft class="w-5 h-5 text-gray-700"/>
+                </button>
+
+                <!-- NEXT BUTTON (inside image) -->
+                <button
+                        onclick={next}
+                        class="absolute right-2 top-1/2 -translate-y-1/2
+                       bg-white/70 hover:bg-white rounded-full p-1 shadow
+                       flex items-center justify-center"
+                >
+                    <ChevronRight class="w-5 h-5 text-gray-700"/>
+                </button>
+            <!--{/if}-->
+
         </div>
     </div>
-
     <!-- Content -->
     <div class="px-4 pb-4">
         <!-- Product Name -->
@@ -63,7 +96,6 @@
 
         <!-- Add to Cart Button -->
         <button
-                onclick={addToCart}
                 class="
                 w-full
                 flex items-center justify-center gap-2
@@ -80,12 +112,3 @@
         </button>
     </div>
 </div>
-
-<style>
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-</style>
