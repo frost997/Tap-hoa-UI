@@ -27,20 +27,33 @@
     let coupon: string = $state("");       // ADDED Sales Coupon
     let showAdditional: boolean = $state(false);
 
-    if (product) {
-        name = product.productName
-        on_hand = product.on_hand
-        brand = product.brand
-        categories = product.categories
-        price = product.price
-        coupon = product.coupon
-        if (product.imageURL) {
-            product.imageURL.forEach((image: string) => {
-                uploadedImages.push({name: product.productName, url: image})
-            })
+    $inspect(product)
+
+    function resetForm() {
+        name = "";
+        on_hand = 0;
+        brand = "";
+        categories = "";
+        price = 0;
+        coupon = "";
+        uploadedImages = []
+    }
+
+    function populateProductForm(product: Product) {
+        if (product) {
+            name = product.productName
+            on_hand = product.on_hand
+            brand = product.brand
+            categories = product.category
+            price = product.price
+            coupon = product.saleCoupon
+            if (product.imageURL) {
+                product.imageURL.forEach((image: string) => {
+                    uploadedImages.push({name: product.productName, url: image})
+                })
+            }
         }
     }
-    $inspect(product)
 
     function addImageUrl() {
         if (!imageUrl.trim()) return;
@@ -79,6 +92,13 @@
         productStore.addProduct([product])
         console.log("NEW PRODUCT:", product);
     }
+
+    $effect(() => {
+        resetForm();
+        if (mode == 'edit' && product) {
+            populateProductForm(product)
+        }
+    })
 </script>
 
 <main class="content">

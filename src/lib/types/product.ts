@@ -1,7 +1,6 @@
 // =================================
 // STEP 3: TYPESCRIPT TYPES
 // =================================
-
 // src/lib/types/+page.svelte.ts
 export interface Product {
     _id: string;
