@@ -10,13 +10,12 @@
     import {productTitle} from "$lib/stores/title";
 
 
-    const {currentView, admin} = $props<{ currentView: 'grid' | 'list', admin?: boolean | null }>();
+    const {currentView} = $props<{ currentView: 'grid' | 'list' }>();
     let products = $state<Product[]>([]);
     let product = $state<Product | any>()
     let mode = $state<'view' | 'create' | 'import' | 'edit'>('view')
     // let categories = $state<Category[]>([]);
     let loading = $state(true);
-    let showFilters = $state(false);
     let filters = $state({
         category: '',
         sort: 'created_desc',

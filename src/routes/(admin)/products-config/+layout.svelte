@@ -1,7 +1,10 @@
 <script lang="ts">
     import {productTitle} from "$lib/stores/title.js";
     import {ListFilterPlus} from "lucide-svelte";
+    import {authStore} from "$lib/stores/auth";
 
+    const isAuthenticated = $derived($authStore.isAuthenticated);
+    const roles = $derived($authStore.user.roles);
     let mode = $state<'view' | 'create' | 'import' | 'edit'>('view')
     let showFilters = $state(false);
 
@@ -29,7 +32,7 @@
     <div class="mb-8 flex items-center justify-between">
         <h1 class="text-3xl font-bold text-gray-900">{$productTitle}</h1>
 
-        {#if admin}
+        {#if isAuthenticated && roles?.some(rl => rl === 'ADMIN')}
 
             <div class="flex items-center gap-3">
 
