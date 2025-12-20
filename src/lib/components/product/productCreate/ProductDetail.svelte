@@ -222,34 +222,6 @@
 
 
 <style>
-    /*.page-wrapper {*/
-    /*    display: flex;*/
-    /*    width: 100%;*/
-    /*    padding: 40px;*/
-    /*    font-family: sans-serif;*/
-    /*    gap: 40px;*/
-    /*}*/
-
-    /* Sidebar */
-    /*.sidebar {*/
-    /*    width: 200px;*/
-    /*}*/
-
-    /*.sidebar ul {*/
-    /*    list-style: none;*/
-    /*    padding: 0;*/
-    /*}*/
-
-    /*.sidebar li {*/
-    /*    padding: 8px 0;*/
-    /*    color: #777;*/
-    /*    cursor: pointer;*/
-    /*}*/
-
-    /*.sidebar li.active {*/
-    /*    color: #2c67f4;*/
-    /*    font-weight: bold;*/
-    /*}*/
 
     /* Main Content */
     .content {
