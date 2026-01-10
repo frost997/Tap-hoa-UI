@@ -9,9 +9,6 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
-		"paths": {
-			"$lib": ["./src/lib"],
-			"$lib/*": ["./src/lib/*"]
-		}
+		"moduleResolution": "bundler"
 	}
 }
