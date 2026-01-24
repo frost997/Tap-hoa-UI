@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from "$app/stores";
+	import { page } from "$app/state";
 	import { auth, cart, ui } from "$stores";
 	import { cn } from "$utils";
 	import Button from "$components/shared/Button.svelte";
@@ -20,8 +20,6 @@
 	function closeMenu() {
 		menuOpen = false;
 	}
-
-	$inspect(auth.isAdmin);
 </script>
 
 <header
@@ -53,7 +51,7 @@
 						href={link.href}
 						class={cn(
 							"px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200",
-							$page.url.pathname === link.href
+							page.url.pathname === link.href
 								? "bg-primary-50 text-primary-600"
 								: "text-surface-600 hover:bg-surface-100 hover:text-surface-900",
 						)}
@@ -93,10 +91,10 @@
 							aria-expanded={menuOpen}
 							aria-haspopup="true"
 						>
-							<Avatar name={auth.user.name} size="sm" />
+							<Avatar name={auth.user.userName} size="sm" />
 							<span
 								class="hidden sm:block text-sm font-medium text-surface-700"
-								>{auth.user.name}</span
+								>{auth.user.userName}</span
 							>
 							<svg
 								class={cn(
@@ -125,11 +123,13 @@
 									class="px-4 py-2 border-b border-surface-100"
 								>
 									<p
-										class="text-sm font-medium text-surface-900"
+										class="text-sm font-medium text-surface-900 truncate"
 									>
-										{auth.user.name}
+										{auth.user.userName}
 									</p>
-									<p class="text-xs text-surface-500">
+									<p
+										class="text-xs text-surface-500 truncate"
+									>
 										{auth.user.email}
 									</p>
 								</div>
@@ -209,7 +209,7 @@
 						href={link.href}
 						class={cn(
 							"flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors",
-							$page.url.pathname === link.href
+							page.url.pathname === link.href
 								? "bg-primary-50 text-primary-600"
 								: "text-surface-600 hover:bg-surface-100",
 						)}

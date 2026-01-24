@@ -113,3 +113,15 @@ export interface Toast {
 	message: string;
 	duration?: number;
 }
+
+
+//Dashboard types 
+
+export interface Dashboard {
+	productCount: number | null;
+	userCount: number | null;
+	TransactionsCount: number | null;
+	RevenueCount: number | null;
+	pendingOrders: number | null;
+	lowStockItems: number | null;
+}

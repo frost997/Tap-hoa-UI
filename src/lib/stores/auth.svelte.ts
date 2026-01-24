@@ -9,7 +9,7 @@ class AuthStore {
 
 	// Derived state
 	get isAdmin() {
-		return this.user?.roles.includes('ADMIN');
+		return this.user?.roles?.includes('ADMIN');
 	}
 
 	async initialize() {

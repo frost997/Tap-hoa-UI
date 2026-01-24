@@ -5,7 +5,8 @@ import type {
 	Cart,
 	Transaction,
 	ApiResponse,
-	PaginatedResponse
+	PaginatedResponse,
+	Dashboard
 } from '$types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
@@ -185,6 +186,10 @@ class ApiService {
 
 		const query = searchParams.toString();
 		return this.request(`/admin/users${query ? `?${query}` : ''}`);
+	}
+
+	async getCount(): Promise<ApiResponse<Dashboard>> {
+		return this.request(`/dashboard`);
 	}
 
 	async updateUserRole(userId: string, role: 'user' | 'admin'): Promise<ApiResponse<User>> {

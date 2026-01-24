@@ -65,10 +65,10 @@
 			>
 				<Badge variant="danger">Out of Stock</Badge>
 			</div>
-		{:else if product.stock <= 5}
+		{:else if product.on_hand <= 5}
 			<div class="absolute top-3 right-3">
 				<Badge variant="warning" size="sm"
-					>Only {product.stock} left</Badge
+					>Only {product.on_hand} left</Badge
 				>
 			</div>
 		{/if}

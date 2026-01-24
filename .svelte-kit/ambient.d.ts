@@ -43,6 +43,8 @@ declare module '$env/static/private' {
 	export const DISPLAY: string;
 	export const DriverData: string;
 	export const EXEPATH: string;
+	export const FPS_BROWSER_APP_PROFILE_STRING: string;
+	export const FPS_BROWSER_USER_PROFILE_STRING: string;
 	export const GIT_ASKPASS: string;
 	export const GIT_LFS_PATH: string;
 	export const HOME: string;
@@ -65,6 +67,7 @@ declare module '$env/static/private' {
 	export const MSYSTEM_PREFIX: string;
 	export const NODE: string;
 	export const NODE_ENV: string;
+	export const NODE_OPTIONS: string;
 	export const NODE_PATH: string;
 	export const npm_command: string;
 	export const npm_config_frozen_lockfile: string;
@@ -141,8 +144,10 @@ declare module '$env/static/private' {
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
 	export const VSCODE_GIT_ASKPASS_NODE: string;
 	export const VSCODE_GIT_IPC_HANDLE: string;
+	export const VSCODE_INSPECTOR_OPTIONS: string;
 	export const VSCODE_PYTHON_AUTOACTIVATE_GUARD: string;
 	export const WINDIR: string;
+	export const __COMPAT_LAYER: string;
 }
 
 /**
@@ -189,6 +194,8 @@ declare module '$env/dynamic/private' {
 		DISPLAY: string;
 		DriverData: string;
 		EXEPATH: string;
+		FPS_BROWSER_APP_PROFILE_STRING: string;
+		FPS_BROWSER_USER_PROFILE_STRING: string;
 		GIT_ASKPASS: string;
 		GIT_LFS_PATH: string;
 		HOME: string;
@@ -211,6 +218,7 @@ declare module '$env/dynamic/private' {
 		MSYSTEM_PREFIX: string;
 		NODE: string;
 		NODE_ENV: string;
+		NODE_OPTIONS: string;
 		NODE_PATH: string;
 		npm_command: string;
 		npm_config_frozen_lockfile: string;
@@ -287,8 +295,10 @@ declare module '$env/dynamic/private' {
 		VSCODE_GIT_ASKPASS_MAIN: string;
 		VSCODE_GIT_ASKPASS_NODE: string;
 		VSCODE_GIT_IPC_HANDLE: string;
+		VSCODE_INSPECTOR_OPTIONS: string;
 		VSCODE_PYTHON_AUTOACTIVATE_GUARD: string;
 		WINDIR: string;
+		__COMPAT_LAYER: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;
 	}
