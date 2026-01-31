@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { page } from "$app/stores";
+  import { page } from "$app/state";
   import { auth, ui } from "$stores";
   import { cn } from "$utils";
   import Avatar from "$components/shared/Avatar.svelte";
 
   let menuOpen = $state(false);
 
-  let pageTitle = $derived(getPageTitle($page.url.pathname));
+  let pageTitle = $derived(getPageTitle(page.url.pathname));
 
   function getPageTitle(pathname: string): string {
     const segments = pathname.split("/").filter(Boolean);
@@ -27,7 +27,7 @@
 <header
   class={cn(
     "sticky top-0 z-30 h-16 bg-white border-b border-surface-200 transition-all duration-300",
-    ui.sidebarOpen ? "lg:ml-64" : "lg:ml-20"
+    ui.sidebarOpen ? "lg:ml-64" : "lg:ml-20",
   )}
 >
   <div class="flex items-center justify-between h-full px-4 lg:px-6">
