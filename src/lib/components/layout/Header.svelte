@@ -13,6 +13,8 @@
 		{ href: "/history", label: "Orders", icon: "receipt" },
 	];
 
+	let isAdmin = $derived(auth.isAdmin);
+	let user = $derived(auth.user);
 	function toggleMenu() {
 		menuOpen = !menuOpen;
 	}
@@ -70,107 +72,115 @@
 
 			<!-- Right side actions -->
 			<div class="flex items-center gap-3">
-				{#if auth.isAdmin}
-					<Button
-						href="/admin"
-						variant="secondary"
-						size="sm"
-						class="hidden sm:inline-flex"
-					>
-						Admin Panel
-					</Button>
-				{/if}
-
-				<!-- User menu -->
-				{#if auth.user}
-					<div class="relative">
-						<button
-							type="button"
-							class="flex items-center gap-2 p-1.5 rounded-xl hover:bg-surface-100 transition-colors"
-							onclick={toggleMenu}
-							aria-expanded={menuOpen}
-							aria-haspopup="true"
-						>
-							<Avatar name={auth.user.userName} size="sm" />
-							<span
-								class="hidden sm:block text-sm font-medium text-surface-700"
-								>{auth.user.userName}</span
-							>
-							<svg
-								class={cn(
-									"w-4 h-4 text-surface-400 transition-transform",
-									menuOpen && "rotate-180",
-								)}
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M19 9l-7 7-7-7"
-								/>
-							</svg>
-						</button>
-
-						{#if menuOpen}
-							<div
-								class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-surface-200 py-1 animate-fade-in"
-								role="menu"
-							>
-								<div
-									class="px-4 py-2 border-b border-surface-100"
-								>
-									<p
-										class="text-sm font-medium text-surface-900 truncate"
-									>
-										{auth.user.userName}
-									</p>
-									<p
-										class="text-xs text-surface-500 truncate"
-									>
-										{auth.user.email}
-									</p>
-								</div>
-								{#if auth.isAdmin}
-									<a
-										href="/admin"
-										class="block px-4 py-2 text-sm text-surface-700 hover:bg-surface-50 sm:hidden"
-										onclick={closeMenu}
-									>
-										Admin Panel
-									</a>
-								{/if}
-								<a
-									href="/history"
-									class="block px-4 py-2 text-sm text-surface-700 hover:bg-surface-50"
-									onclick={closeMenu}
-								>
-									Order History
-								</a>
-								<hr class="my-1 border-surface-100" />
-								<a
-									href="/logout"
-									class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-									onclick={closeMenu}
-								>
-									Sign Out
-								</a>
-							</div>
-						{/if}
+				{#if auth.isLoading}
+					<!-- Skeleton placeholder while auth initializes -->
+					<div class="flex items-center gap-3 animate-pulse">
+						<div class="hidden sm:block w-24 h-8 bg-surface-200 rounded-xl"></div>
+						<div class="w-8 h-8 bg-surface-200 rounded-full"></div>
 					</div>
 				{:else}
-					<Button href="/login" variant="ghost" size="sm">
-						Sign In
-					</Button>
-					<Button
-						href="/register"
-						size="sm"
-						class="hidden sm:inline-flex"
-					>
-						Get Started
-					</Button>
+					{#if isAdmin}
+						<Button
+							href="/admin"
+							variant="secondary"
+							size="sm"
+							class="hidden sm:inline-flex"
+						>
+							Admin Panel
+						</Button>
+					{/if}
+
+					<!-- User menu -->
+					{#if user}
+						<div class="relative">
+							<button
+								type="button"
+								class="flex items-center gap-2 p-1.5 rounded-xl hover:bg-surface-100 transition-colors"
+								onclick={toggleMenu}
+								aria-expanded={menuOpen}
+								aria-haspopup="true"
+							>
+								<Avatar name={user.userName} size="sm" />
+								<span
+									class="hidden sm:block text-sm font-medium text-surface-700"
+									>{user.userName}</span
+								>
+								<svg
+									class={cn(
+										"w-4 h-4 text-surface-400 transition-transform",
+										menuOpen && "rotate-180",
+									)}
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M19 9l-7 7-7-7"
+									/>
+								</svg>
+							</button>
+
+							{#if menuOpen}
+								<div
+									class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-surface-200 py-1 animate-fade-in"
+									role="menu"
+								>
+									<div
+										class="px-4 py-2 border-b border-surface-100"
+									>
+										<p
+											class="text-sm font-medium text-surface-900 truncate"
+										>
+											{user.userName}
+										</p>
+										<p
+											class="text-xs text-surface-500 truncate"
+										>
+											{user.email}
+										</p>
+									</div>
+									{#if isAdmin}
+										<a
+											href="/admin"
+											class="block px-4 py-2 text-sm text-surface-700 hover:bg-surface-50 sm:hidden"
+											onclick={closeMenu}
+										>
+											Admin Panel
+										</a>
+									{/if}
+									<a
+										href="/history"
+										class="block px-4 py-2 text-sm text-surface-700 hover:bg-surface-50"
+										onclick={closeMenu}
+									>
+										Order History
+									</a>
+									<hr class="my-1 border-surface-100" />
+									<a
+										href="/logout"
+										class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+										onclick={closeMenu}
+									>
+										Sign Out
+									</a>
+								</div>
+							{/if}
+						</div>
+					{:else}
+						<Button href="/login" variant="ghost" size="sm">
+							Sign In
+						</Button>
+						<Button
+							href="/register"
+							size="sm"
+							class="hidden sm:inline-flex"
+						>
+							Get Started
+						</Button>
+					{/if}
 				{/if}
 
 				<!-- Mobile menu button -->
