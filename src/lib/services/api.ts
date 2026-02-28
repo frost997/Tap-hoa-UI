@@ -127,7 +127,7 @@ class ApiService {
     product: Partial<ProductFormData>,
     _id: string | null | undefined
   ): Promise<ApiResponse<Product>> {
-    return this.request(`/products/${product._id}`, {
+    return this.request(`/products/${_id}`, {
       method: "PUT",
       body: JSON.stringify(product)
     });
