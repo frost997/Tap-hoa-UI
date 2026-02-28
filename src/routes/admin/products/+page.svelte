@@ -8,13 +8,14 @@
   import type { Product, ProductCategory, ProductFormData } from "$types";
   import { onMount } from "svelte";
 
-  let products = $state<Product[]>([]);
+  let products = $state<Product[] | null>([]);
+  let selectedProduct = $state<Product | null>([]);
   let isLoading = $state(true);
   let currentPage = $state(1);
   let totalPages = $state(1);
   let selectedCategory = $state<ProductCategory | null>(null);
   let searchQuery = $state("");
-  let showModal = $state("");
+  let showModal = $state<"create" | "update" | "">("");
   async function loadProducts() {
     isLoading = true;
     try {
@@ -22,7 +23,7 @@
         category: selectedCategory ?? undefined,
         search: searchQuery || undefined,
         page: currentPage,
-        pageSize: 12
+        pageSize: 12,
       });
       products = response.data.data;
       totalPages = response.data.totalPages;
@@ -38,9 +39,11 @@
   });
 
   function handleCreate(e: MouseEvent): void {
+    selectedProduct = null;
     showModal = "create";
   }
   function handleUpdate(data: Product): void {
+    selectedProduct = data;
     showModal = "update";
   }
   async function handleFormSubmit(data: any) {
@@ -109,6 +112,7 @@
 <!-- Modal -->
 <ProductFormModal
   bind:open={showModal}
+  product={selectedProduct}
   onsubmit={handleFormSubmit}
   onedit={handleFormUpdate}
 />

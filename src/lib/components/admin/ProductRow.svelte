@@ -33,7 +33,7 @@
     beverages: "🥤",
     tissues: "🧻",
     daily_necessities: "🧴",
-    snacks: "🍿"
+    snacks: "🍿",
   };
 </script>
 
@@ -41,7 +41,7 @@
   class={cn(
     "flex items-center gap-4 p-4 bg-white border border-surface-200 rounded-xl",
     "transition-all duration-200 hover:shadow-md hover:border-surface-300",
-    isDeleting && "opacity-50 pointer-events-none"
+    isDeleting && "opacity-50 pointer-events-none",
   )}
 >
   <!-- Product Image -->
@@ -50,7 +50,7 @@
   >
     {#if product.imageURL}
       <img
-        src={product.imageURL}
+        src={product.imageURL[0]}
         alt={product.productName}
         class="w-full h-full object-cover"
         loading="lazy"
@@ -109,7 +109,7 @@
       class={cn(
         "p-2 rounded-lg transition-all duration-200",
         "text-surface-500 hover:text-primary-600 hover:bg-primary-50",
-        "focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+        "focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2",
       )}
       onclick={handleEdit}
       aria-label="Edit product"
@@ -136,7 +136,7 @@
       class={cn(
         "p-2 rounded-lg transition-all duration-200",
         "text-surface-500 hover:text-red-600 hover:bg-red-50",
-        "focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+        "focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2",
       )}
       onclick={handleDelete}
       aria-label="Delete product"

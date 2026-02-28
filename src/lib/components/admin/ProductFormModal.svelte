@@ -3,6 +3,7 @@
   import Button from "$components/shared/Button.svelte";
   import Input from "$components/shared/Input.svelte";
   import Select from "$components/shared/Select.svelte";
+  import type { Product } from "$types";
 
   type ProductCategory = "beverages" | "snacks" | "daily_necessities";
 
@@ -16,13 +17,20 @@
   }
 
   interface Props {
-    open?: string;
+    open?: "create" | "update" | "";
+    product?: Product | null; // Product to edit (null for create)
     onclose?: () => void;
-    onsubmit?: (data: ProductFormData) => void;
-    onedit?: (data: ProductFormData) => void;
+    onsubmit?: (data: ProductFormData) => void; // For create
+    onedit?: (data: ProductFormData) => void; // For update
   }
 
-  let { open = $bindable(""), onclose, onsubmit }: Props = $props();
+  let {
+    open = $bindable(""),
+    product = null,
+    onclose,
+    onsubmit,
+    onedit,
+  }: Props = $props();
 
   // Form state
   let productName = $state("");
@@ -38,8 +46,26 @@
   const categoryOptions = [
     { value: "beverages", label: "🥤 Beverages" },
     { value: "snacks", label: "🍿 Snacks" },
-    { value: "daily_necessities", label: "🧴 Daily Necessities" }
+    { value: "daily_necessities", label: "🧴 Daily Necessities" },
   ];
+
+  // Populate form when product changes (for edit mode)
+  $effect(() => {
+    $inspect(open);
+    $inspect(product);
+    if (open === "update" && product) {
+      productName = product.productName || "";
+      description = product.description || "";
+      price = product.price || 0;
+      category = (product.category as ProductCategory) || "beverages";
+      imageURL = Array.isArray(product.imageURL)
+        ? product.imageURL[0] || ""
+        : product.imageURL || "";
+      on_hand = product.on_hand || 0;
+    } else if (open === "create") {
+      resetForm();
+    }
+  });
 
   // Validation
   function validate(): boolean {
@@ -82,8 +108,8 @@
     onclose?.();
   }
 
-  // Handle submit
-  async function handleSubmit(e: Event) {
+  // Handle form submission
+  async function handleFormSubmit(e: Event) {
     e.preventDefault();
 
     if (!validate()) return;
@@ -97,17 +123,20 @@
         price,
         category,
         imageURL: imageURL.trim() || undefined,
-        on_hand
+        on_hand,
       };
 
-      onsubmit?.(formData);
+      if (open === "create") {
+        onsubmit?.(formData);
+      } else if (open === "update") {
+        onedit?.(formData);
+      }
+
       handleClose();
     } finally {
       isSubmitting = false;
     }
   }
-
-  async function handleEdit(e: Event) {
 
   // Handle keyboard events
   function handleKeydown(e: KeyboardEvent) {
@@ -115,6 +144,14 @@
       handleClose();
     }
   }
+
+  // Dynamic title and button text
+  let modalTitle = $derived(
+    open === "update" ? "Edit Product" : "Create New Product",
+  );
+  let submitButtonText = $derived(
+    open === "update" ? "Save Changes" : "Create Product",
+  );
 </script>
 
 <svelte:window onkeydown={handleKeydown} />
@@ -140,7 +177,7 @@
         class="flex items-center justify-between p-5 border-b border-surface-100"
       >
         <h2 class="text-lg font-display font-semibold text-surface-900">
-          Create New Product
+          {modalTitle}
         </h2>
         <button
           type="button"
@@ -165,14 +202,7 @@
       </div>
 
       <!-- Form -->
-      <form
-        onsubmit={open === "create"
-          ? handleSubmit
-          : open === "update"
-            ? handleEdit
-            : null}
-        class="p-5 space-y-4"
-      >
+      <form onsubmit={handleFormSubmit} class="p-5 space-y-4">
         <Input
           label="Product Name"
           placeholder="Enter product name"
@@ -196,7 +226,7 @@
               "w-full px-4 py-2.5 rounded-xl border bg-white text-surface-900 placeholder-surface-400",
               "transition-all duration-200 resize-none",
               "focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500",
-              errors.description ? "border-red-300" : "border-surface-200"
+              errors.description ? "border-red-300" : "border-surface-200",
             )}
           ></textarea>
           {#if errors.description}
@@ -242,7 +272,9 @@
           <Button variant="ghost" onclick={handleClose} type="button">
             Cancel
           </Button>
-          <Button type="submit" loading={isSubmitting}>Create Product</Button>
+          <Button type="submit" loading={isSubmitting}>
+            {submitButtonText}
+          </Button>
         </div>
       </form>
     </div>
