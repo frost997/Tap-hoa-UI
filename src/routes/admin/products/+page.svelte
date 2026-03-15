@@ -15,7 +15,7 @@
   let totalPages = $state(1);
   let selectedCategory = $state<ProductCategory | null>(null);
   let searchQuery = $state("");
-  let showModal = $state<"create" | "update" | "">("");
+  let showModal = $state<"create" | "update" | "delete" | "">("");
   async function loadProducts() {
     isLoading = true;
     try {
@@ -34,8 +34,8 @@
     }
   }
 
-  onMount(() => {
-    loadProducts();
+  onMount(async () => {
+    await loadProducts();
   });
 
   function handleCreate(e: MouseEvent): void {
@@ -46,6 +46,19 @@
     selectedProduct = data;
     showModal = "update";
   }
+  async function handleDelete(data: Product): Promise<void> {
+    selectedProduct = data;
+    console.log("Deleted product:", data);
+    // Call your API here
+    try {
+      await api.deleteProduct(data._id);
+      await loadProducts();
+      toast.success(`Product "${data.productName}" deleted!`);
+    } catch (error) {
+      toast.error(`Failed to delete product "${data.productName}"`);
+    }
+  }
+
   async function handleFormSubmit(data: any) {
     console.log("New product:", data);
     // Call your API here
@@ -54,6 +67,7 @@
 
       await api.createProduct(payload);
       toast.success(`Product "${data.productName}" created!`);
+      await loadProducts();
     } catch (error) {
       toast.error(`Failed to create product "${data.productName}"`);
     }
@@ -66,11 +80,14 @@
       const payload = { ...data, imageURL: [data.imageURL] };
 
       await api.updateProduct(payload, id);
+      await loadProducts();
       toast.success(`Product "${data.productName}" update!`);
     } catch (error) {
       toast.error(`Failed to create product "${data.productName}"`);
     }
   }
+
+  async function handleFormDelete(data: any, id: string | null | undefined) {}
 </script>
 
 <svelte:head>
@@ -104,7 +121,7 @@
     class="list list-cols-1 sm:list-cols-2 lg:list-cols-3 xl:list-cols-4 gap-6"
   >
     {#each products as product (product._id)}
-      <ProductRow {product} onEdit={handleUpdate} />
+      <ProductRow {product} onEdit={handleUpdate} onDelete={handleDelete} />
     {/each}
   </div>
 </Card>

@@ -6,7 +6,7 @@ import type {
   Transaction,
   ApiResponse,
   PaginatedResponse,
-  Dashboard
+  Dashboard,
 } from "$types";
 
 const API_BASE_URL =
@@ -21,7 +21,7 @@ class ApiService {
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`;
 
@@ -31,8 +31,8 @@ class ApiService {
         credentials: "include", // Send cookies automatically
         headers: {
           "Content-Type": "application/json",
-          ...options.headers
-        }
+          ...options.headers,
+        },
       });
 
       const data = await response.json();
@@ -41,14 +41,14 @@ class ApiService {
         throw {
           message: data.message || "An error occurred",
           status: response.status,
-          code: data.code
+          code: data.code,
         };
       }
 
       return {
         data,
         success: true,
-        message: data.message
+        message: data.message,
       };
     } catch (error) {
       if (error && typeof error === "object" && "status" in error) {
@@ -57,7 +57,7 @@ class ApiService {
       throw {
         message: "Network error. Please check your connection.",
         status: 0,
-        code: "NETWORK_ERROR"
+        code: "NETWORK_ERROR",
       };
     }
   }
@@ -65,22 +65,22 @@ class ApiService {
   // Authentication endpoints
   async login(
     email: string,
-    password: string
+    password: string,
   ): Promise<ApiResponse<{ user: User }>> {
     return this.request("/auth/login", {
       method: "POST",
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password }),
     });
   }
 
   async register(
     name: string,
     email: string,
-    password: string
+    password: string,
   ): Promise<ApiResponse<{ user: User }>> {
     return this.request("/auth/register", {
       method: "POST",
-      body: JSON.stringify({ name, email, password })
+      body: JSON.stringify({ name, email, password }),
     });
   }
 
@@ -115,25 +115,27 @@ class ApiService {
   }
 
   async createProduct(
-    product: ProductFormData[]
+    product: ProductFormData[],
   ): Promise<ApiResponse<Product>> {
     return this.request("/products", {
       method: "POST",
-      body: JSON.stringify(product)
+      body: JSON.stringify(product),
     });
   }
 
   async updateProduct(
     product: Partial<ProductFormData>,
-    _id: string | null | undefined
+    _id: string | null | undefined,
   ): Promise<ApiResponse<Product>> {
     return this.request(`/products/${_id}`, {
       method: "PUT",
-      body: JSON.stringify(product)
+      body: JSON.stringify(product),
     });
   }
 
-  async deleteProduct(id: string): Promise<ApiResponse<void>> {
+  async deleteProduct(
+    id: string | null | undefined,
+  ): Promise<ApiResponse<void>> {
     return this.request(`/products/${id}`, { method: "DELETE" });
   }
 
@@ -144,21 +146,21 @@ class ApiService {
 
   async addToCart(
     productId: string,
-    quantity: number
+    quantity: number,
   ): Promise<ApiResponse<Cart>> {
     return this.request("/cart/items", {
       method: "POST",
-      body: JSON.stringify({ productId, quantity })
+      body: JSON.stringify({ productId, quantity }),
     });
   }
 
   async updateCartItem(
     itemId: string,
-    quantity: number
+    quantity: number,
   ): Promise<ApiResponse<Cart>> {
     return this.request(`/cart/items/${itemId}`, {
       method: "PUT",
-      body: JSON.stringify({ quantity })
+      body: JSON.stringify({ quantity }),
     });
   }
 
@@ -216,21 +218,21 @@ class ApiService {
 
   async updateUserRole(
     userId: string,
-    role: "user" | "admin"
+    role: "user" | "admin",
   ): Promise<ApiResponse<User>> {
     return this.request(`/admin/users/${userId}/role`, {
       method: "PUT",
-      body: JSON.stringify({ role })
+      body: JSON.stringify({ role }),
     });
   }
 
   async toggleUserStatus(
     userId: string,
-    isActive: boolean
+    isActive: boolean,
   ): Promise<ApiResponse<User>> {
     return this.request(`/admin/users/${userId}/status`, {
       method: "PUT",
-      body: JSON.stringify({ isActive })
+      body: JSON.stringify({ isActive }),
     });
   }
 
